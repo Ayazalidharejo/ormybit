@@ -1,0 +1,31 @@
+# MyToolOrbit
+
+> Free, fast, privacy-friendly online tools for developers, SEO professionals, and AI users. All tools run client-side in your browser. No signup required.
+
+## SEO Tools
+
+- [Meta Tags Generator](https://mytoolorbit.com/tools/meta-tags-generator)
+- [Schema Markup Generator](https://mytoolorbit.com/tools/schema-markup-generator)
+- [Sitemap Generator](https://mytoolorbit.com/tools/sitemap-generator)
+- [Robots.txt Generator](https://mytoolorbit.com/tools/robots-txt-generator)
+- [OG Preview Checker](https://mytoolorbit.com/tools/og-preview-checker)
+
+## Developer Tools
+
+- [Broken Link Checker](https://mytoolorbit.com/tools/broken-link-checker)
+
+## AI Tools
+
+- [llms.txt Generator](https://mytoolorbit.com/tools/llms-txt-generator)
+- [Token Counter for AI/LLMs](https://mytoolorbit.com/tools/token-counter)
+
+## Guides
+
+- [How to Write Meta Tags That Actually Improve Click-Through Rate](https://mytoolorbit.com/guides/meta-tags-seo-guide)
+- [A Practical Guide to Schema Markup for Small Sites](https://mytoolorbit.com/guides/schema-markup-guide)
+- [What Is llms.txt and Do You Actually Need One?](https://mytoolorbit.com/guides/llms-txt-guide)
+
+## About
+
+- [About MyToolOrbit](https://mytoolorbit.com/about)
+- [Contact](https://mytoolorbit.com/contact)
