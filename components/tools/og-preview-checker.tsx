@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -108,11 +109,12 @@ export function OgPreviewChecker() {
             <div className="max-w-md overflow-hidden rounded-lg border border-subtle bg-background">
               <div className="flex aspect-[1.91/1] items-center justify-center bg-muted">
                 {previewImage ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={previewImage}
-                    alt="OG preview"
-                    className="h-full w-full object-cover"
+                    alt="Social media preview card image"
+                    fill
+                    unoptimized
+                    className="object-cover"
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = 'none';
                     }}

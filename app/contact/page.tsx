@@ -22,7 +22,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8">
         <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/20">
           <Mail className="h-5 w-5 text-primary" />

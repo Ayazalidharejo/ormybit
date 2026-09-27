@@ -5,11 +5,25 @@ export const metadata: Metadata = {
   description:
     'MyToolOrbit privacy policy. We do not collect personal data. All tools run client-side in your browser.',
   alternates: { canonical: '/privacy-policy' },
+
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Privacy Policy',
+    description: 'MyToolOrbit privacy policy. We do not collect personal data. All tools run client-side in your browser.',
+    url: '/privacy-policy',
+    type: 'website',
+    siteName: 'MyToolOrbit',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privacy Policy',
+    description: 'MyToolOrbit privacy policy. We do not collect personal data. All tools run client-side in your browser.',
+  },
 };
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-8">
         Privacy Policy
       </h1>

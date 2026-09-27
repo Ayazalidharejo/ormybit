@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Image from 'next/image';
 import { CopyButton } from '@/components/shared/copy-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -125,13 +126,14 @@ export function MetaTagsGenerator() {
           Social Share Preview
         </div>
         <div className="max-w-md overflow-hidden rounded-lg border border-subtle bg-background">
-          <div className="aspect-[1.91/1] bg-muted flex items-center justify-center">
+          <div className="relative aspect-[1.91/1] bg-muted flex items-center justify-center">
             {image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={image}
-                alt="Social preview"
-                className="h-full w-full object-cover"
+                alt="Social share card preview image"
+                fill
+                unoptimized
+                className="object-cover"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = 'none';
                 }}

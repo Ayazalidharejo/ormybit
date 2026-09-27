@@ -1,5 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
+const RATE_LIMIT = 20;
+const RATE_LIMIT_WINDOW = 60 * 1000;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+  if (!record) {
+    rateLimitMap.set(ip, { count: 1, lastReset: now });
+    return true;
+  }
+  if (now - record.lastReset > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(ip, { count: 1, lastReset: now });
+    return true;
+  }
+  if (record.count >= RATE_LIMIT) {
+    return false;
+  }
+  record.count++;
+  return true;
+}
+
+function isSafeUrl(urlObj: URL): boolean {
+  const hostname = urlObj.hostname;
+  if (
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '::1' ||
+    hostname.startsWith('192.168.') ||
+    hostname.startsWith('10.') ||
+    hostname.match(/^172\.(1[6-9]|2[0-9]|3[0-1])\./) ||
+    hostname.endsWith('.internal') ||
+    hostname.endsWith('.local')
+  ) {
+    return false;
+  }
+  return true;
+}
+
 interface OgData {
   title: string | null;
   description: string | null;
@@ -30,6 +69,11 @@ function extractMetaContent(html: string, property: string): string | null {
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = request.headers.get('x-forwarded-for') ?? 'unknown';
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+    }
+
     const { url } = await request.json();
 
     if (!url || typeof url !== 'string') {
@@ -46,6 +90,13 @@ export async function POST(request: NextRequest) {
     if (!targetUrl.protocol.startsWith('http')) {
       return NextResponse.json(
         { error: 'URL must use HTTP or HTTPS protocol' },
+        { status: 400 }
+      );
+    }
+
+    if (!isSafeUrl(targetUrl)) {
+      return NextResponse.json(
+        { error: 'Local or internal network URLs are not allowed.' },
         { status: 400 }
       );
     }

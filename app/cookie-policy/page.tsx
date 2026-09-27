@@ -5,11 +5,25 @@ export const metadata: Metadata = {
   description:
     'MyToolOrbit cookie policy. We use minimal cookies and localStorage for consent preferences. No tracking cookies.',
   alternates: { canonical: '/cookie-policy' },
+
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Cookie Policy',
+    description: 'MyToolOrbit cookie policy. We use minimal cookies and localStorage for consent preferences. No tracking cookies.',
+    url: '/cookie-policy',
+    type: 'website',
+    siteName: 'MyToolOrbit',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cookie Policy',
+    description: 'MyToolOrbit cookie policy. We use minimal cookies and localStorage for consent preferences. No tracking cookies.',
+  },
 };
 
 export default function CookiePolicyPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-8">
         Cookie Policy
       </h1>

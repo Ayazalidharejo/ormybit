@@ -9,6 +9,19 @@ export const metadata: Metadata = {
   description:
     'MyToolOrbit offers free, fast, privacy-friendly online tools for developers, SEO professionals, and AI users. Meta tag generators, schema markup, token counter, and more.',
   alternates: { canonical: '/' },
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Free Online Tools for Developers, Creators & SEO',
+    description: 'MyToolOrbit offers free, fast, privacy-friendly online tools for developers, SEO professionals, and AI users.',
+    url: '/',
+    type: 'website',
+    siteName: 'MyToolOrbit',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Online Tools for Developers, Creators & SEO',
+    description: 'MyToolOrbit offers free, fast, privacy-friendly online tools for developers, SEO professionals, and AI users.',
+  },
 };
 
 const features = [

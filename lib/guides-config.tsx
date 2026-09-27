@@ -1,6 +1,7 @@
 import { Search, FileText, Sparkles, type LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export interface GuideConfig {
   slug: string;
@@ -131,12 +132,28 @@ export const guides: GuideConfig[] = [
     tag: 'SEO',
     content: [
       <>
+        {/* Table of Contents */}
+        <div className="bg-secondary/10 border border-secondary/20 rounded-xl p-6 mb-8 mt-2 max-w-5xl mx-auto">
+          <h3 className="text-xl font-bold mb-4 text-foreground mt-0">Table of Contents</h3>
+          <ul className="space-y-2 mb-0 list-none pl-0">
+            <li><a href="#what-it-does" className="text-primary hover:underline">What schema markup actually does</a></li>
+            <li><a href="#which-types" className="text-primary hover:underline">Which schema types does a small site actually need?</a></li>
+            <li><a href="#how-to-add" className="text-primary hover:underline">How to add JSON-LD to your site</a></li>
+            <li><a href="#how-to-test" className="text-primary hover:underline">How to test your schema markup</a></li>
+          </ul>
+        </div>
+
+        {/* Header Image */}
+        <div className="w-full max-w-5xl mx-auto rounded-2xl overflow-hidden my-8 border border-subtle" style={{ height: '300px' }}>
+          <Image src="/images/schema-markup.jpg" alt="Schema Markup and JSON-LD Illustration" width={1200} height={630} style={{ width: '100%', height: '100%', objectFit: 'fill' }} />
+        </div>
+
         <p>
           Schema markup is structured data you add to your web pages that helps search engines understand what your content is about. It is what enables rich results — those enhanced search listings with star ratings, FAQ accordions, and breadcrumb trails that stand out from regular results. This guide covers exactly which schema types small sites need, how to add them without a developer, and how to test that they work.
         </p>
       </>,
       <>
-        <h2>What schema markup actually does</h2>
+        <h2 id="what-it-does">What schema markup actually does</h2>
         <p>
           When you add schema markup to a page, you are giving Google a structured, machine-readable description of what is on that page. Without schema, Google has to guess whether a number on your page is a price, a rating, or a quantity. With schema, you tell it explicitly — &quot;this is a product, the price is $29, and 47 people rated it 4.5 stars.&quot;
         </p>
@@ -145,7 +162,7 @@ export const guides: GuideConfig[] = [
         </p>
       </>,
       <>
-        <h2>Which schema types does a small site actually need?</h2>
+        <h2 id="which-types">Which schema types does a small site actually need?</h2>
         <p>
           There are hundreds of schema types, but most small sites only need a handful:
         </p>
@@ -161,7 +178,7 @@ export const guides: GuideConfig[] = [
         </p>
       </>,
       <>
-        <h2>How to add JSON-LD to your site</h2>
+        <h2 id="how-to-add">How to add JSON-LD to your site</h2>
         <p>
           JSON-LD is Google&apos;s recommended format for structured data. It is a JavaScript object placed inside a <code className="text-primary">&lt;script type=&quot;application/ld+json&quot;&gt;</code> tag. You can put it in the <code className="text-primary">&lt;head&gt;</code> or anywhere in the body — Google reads it regardless of position.
         </p>
@@ -179,7 +196,7 @@ export const guides: GuideConfig[] = [
         </p>
       </>,
       <>
-        <h2>How to test your schema markup</h2>
+        <h2 id="how-to-test">How to test your schema markup</h2>
         <p>
           Before publishing, always validate your markup with <ExtLink href="https://search.google.com/test/rich-results">Google&apos;s Rich Results Test</ExtLink>. Paste your JSON-LD or enter your URL, and the tool will tell you which rich result types your markup is eligible for and flag any errors or warnings.
         </p>

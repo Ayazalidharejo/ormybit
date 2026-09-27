@@ -1,45 +1,90 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ChevronRight } from 'lucide-react';
-import { guides, getGuideBySlug } from '@/lib/guides-config';
+import { ChevronRight, FileText } from 'lucide-react';
+import dbConnect from '@/lib/mongodb';
+import Article from '@/lib/models/Article';
 
-export function generateStaticParams() {
-  return guides.map((guide) => ({ slug: guide.slug }));
-}
+// Disable static generation since we use MongoDB now
+// export function generateStaticParams() {}
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const guide = getGuideBySlug(params.slug);
-  if (!guide) return {};
-
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  let guide = null;
+  try {
+    await dbConnect();
+    guide = await Article.findOne({ slug: params.slug }).lean();
+  } catch (e) {
+    console.error('generateMetadata dbConnect failed:', e);
+  }
+  
+  if (!guide) {
+    const { guides: hardcodedGuides } = await import('@/lib/guides-config');
+    const hardcoded = hardcodedGuides.find(g => g.slug === params.slug);
+    if (hardcoded) {
+      guide = {
+        title: hardcoded.metaTitle || hardcoded.title,
+        excerpt: hardcoded.metaDescription || hardcoded.description,
+        slug: hardcoded.slug
+      };
+    } else {
+      return {};
+    }
+  }
   return {
-    title: guide.metaTitle,
-    description: guide.metaDescription,
+    title: guide.title,
+    description: guide.excerpt,
     alternates: { canonical: `/guides/${guide.slug}` },
+    robots: { index: true, follow: true },
     openGraph: {
-      title: guide.metaTitle,
-      description: guide.metaDescription,
+      title: guide.title,
+      description: guide.excerpt,
       url: `/guides/${guide.slug}`,
       type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
-      title: guide.metaTitle,
-      description: guide.metaDescription,
+      title: guide.title,
+      description: guide.excerpt,
     },
   };
 }
 
-export default function GuidePage({ params }: { params: { slug: string } }) {
-  const guide = getGuideBySlug(params.slug);
-  if (!guide) notFound();
+export default async function GuidePage({ params }: { params: { slug: string } }) {
+  let dbArticle = null;
+  
+  try {
+    await dbConnect();
+    dbArticle = await Article.findOne({ slug: params.slug }).lean();
+  } catch (error) {
+    console.error('Failed to fetch from MongoDB:', error);
+  }
+
+  if (!dbArticle) {
+    const { guides: hardcodedGuides } = await import('@/lib/guides-config');
+    const hardcoded = hardcodedGuides.find(g => g.slug === params.slug);
+    if (!hardcoded) notFound();
+
+    dbArticle = {
+      title: hardcoded.title,
+      slug: hardcoded.slug,
+      excerpt: hardcoded.description,
+      content: hardcoded.content,
+      metaTitle: hardcoded.metaTitle,
+      metaDescription: hardcoded.metaDescription,
+      createdAt: new Date().toISOString()
+    };
+  }
+  
+  // Shallow copy so we can serialize except the content which might be React nodes
+  const guide = { ...dbArticle };
+  // If content is a string, it's from DB. If it's an array, it's from hardcoded config.
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: guide.title,
-    description: guide.description,
-  author: {
+    description: guide.excerpt,
+    author: {
       '@type': 'Organization',
       name: 'MyToolOrbit',
     },
@@ -69,7 +114,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-8">
           <ol className="flex items-center gap-2 text-sm text-secondary-muted">
@@ -85,41 +130,37 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
               </Link>
             </li>
             <ChevronRight className="h-3.5 w-3.5" />
-            <li className="text-foreground font-medium truncate">{guide.tag}</li>
+            <li className="text-foreground font-medium truncate">Guide</li>
           </ol>
         </nav>
 
         {/* Header */}
         <div className="mb-8">
-          <div className="mb-3 flex items-center gap-3">
+          <div className="mb-3 flex items-center justify-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 ring-1 ring-primary/20">
-              <guide.icon className="h-5 w-5 text-primary" />
+              <FileText className="h-5 w-5 text-primary" />
             </div>
-            <span className="text-sm font-medium text-primary">{guide.tag}</span>
+            <span className="text-sm font-medium text-primary">Guide</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl lg:leading-tight text-center">
             {guide.title}
           </h1>
-          <p className="mt-3 text-lg text-secondary-muted">{guide.description}</p>
+          <p className="mt-4 text-xl text-secondary-muted leading-relaxed max-w-4xl mx-auto text-center">
+            {guide.excerpt}
+          </p>
         </div>
 
         {/* Content */}
-        <article className="space-y-8">
-          {guide.content.map((section, i) => (
-            <div key={i} className="space-y-4 text-secondary-muted leading-relaxed [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:mt-8 [&_h3]:text-lg [&_h3]:font-medium [&_h3]:text-foreground [&_h3]:mt-6 [&_ul]:space-y-2 [&_ul]:pl-5 [&_ul]:list-disc [&_li]:text-secondary-muted [&_code]:text-primary [&_code]:text-sm [&_strong]:text-foreground [&_em]:text-secondary-muted">
-              {section}
+        <div className="prose prose-neutral dark:prose-invert prose-lg max-w-5xl mx-auto quill-content">
+          {typeof guide.content === 'string' ? (
+            <div dangerouslySetInnerHTML={{ __html: guide.content }} />
+          ) : (
+            <div className="space-y-6">
+              {Array.isArray(guide.content) && guide.content.map((node: any, i: number) => (
+                <div key={i}>{node}</div>
+              ))}
             </div>
-          ))}
-        </article>
-
-        {/* Back to guides */}
-        <div className="mt-12 border-t border-subtle pt-6">
-          <Link
-            href="/guides"
-            className="text-sm font-medium text-primary hover:underline"
-          >
-            ← Back to all guides
-          </Link>
+          )}
         </div>
       </div>
     </>

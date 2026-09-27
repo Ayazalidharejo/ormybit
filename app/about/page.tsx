@@ -7,6 +7,20 @@ export const metadata: Metadata = {
   description:
     'Learn about MyToolOrbit — a free online tools platform with 8 tools for developers, SEO professionals, and AI users. Built for speed, privacy, and simplicity.',
   alternates: { canonical: '/about' },
+
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'About MyToolOrbit',
+    description: 'Learn about MyToolOrbit — a free online tools platform with 8 tools for developers, SEO professionals, and AI users. Built for speed, privacy, and simplicity.',
+    url: '/about',
+    type: 'website',
+    siteName: 'MyToolOrbit',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About MyToolOrbit',
+    description: 'Learn about MyToolOrbit — a free online tools platform with 8 tools for developers, SEO professionals, and AI users. Built for speed, privacy, and simplicity.',
+  },
 };
 
 const values = [
@@ -29,7 +43,7 @@ const values = [
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/20">
           <Orbit className="h-6 w-6 text-primary" />

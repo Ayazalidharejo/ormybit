@@ -9,6 +9,19 @@ export const metadata: Metadata = {
   description:
     'Browse all free online tools from MyToolOrbit. Meta tag generators, schema markup, llms.txt, broken link checker, token counter, and sitemap generator.',
   alternates: { canonical: '/tools' },
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'All Tools — Free Online Developer, SEO & AI Tools',
+    description: 'Browse all free online tools from MyToolOrbit. Meta tag generators, schema markup, llms.txt, broken link checker, token counter, and sitemap generator.',
+    url: '/tools',
+    type: 'website',
+    siteName: 'MyToolOrbit',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'All Tools — Free Online Developer, SEO & AI Tools',
+    description: 'Browse all free online tools from MyToolOrbit.',
+  },
 };
 
 export default function ToolsPage() {

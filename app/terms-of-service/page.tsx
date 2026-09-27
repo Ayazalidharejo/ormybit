@@ -5,11 +5,25 @@ export const metadata: Metadata = {
   description:
     'MyToolOrbit terms of service. Terms governing the use of our free online tools platform.',
   alternates: { canonical: '/terms-of-service' },
+
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Terms of Service',
+    description: 'MyToolOrbit terms of service. Terms governing the use of our free online tools platform.',
+    url: '/terms-of-service',
+    type: 'website',
+    siteName: 'MyToolOrbit',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Terms of Service',
+    description: 'MyToolOrbit terms of service. Terms governing the use of our free online tools platform.',
+  },
 };
 
 export default function TermsOfServicePage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-8">
         Terms of Service
       </h1>

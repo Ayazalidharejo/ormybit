@@ -11,14 +11,17 @@ import {
 } from '@/lib/tools-config';
 import { ToolPageLayout } from '@/components/shared/tool-page-layout';
 import { ToolCard } from '@/components/shared/tool-card';
-import { MetaTagsGenerator } from '@/components/tools/meta-tags-generator';
-import { SchemaMarkupGenerator } from '@/components/tools/schema-markup-generator';
-import { LlmsTxtGenerator } from '@/components/tools/llms-txt-generator';
-import { BrokenLinkChecker } from '@/components/tools/broken-link-checker';
-import { TokenCounter } from '@/components/tools/token-counter';
-import { SitemapGenerator } from '@/components/tools/sitemap-generator';
-import { RobotsTxtGenerator } from '@/components/tools/robots-txt-generator';
-import { OgPreviewChecker } from '@/components/tools/og-preview-checker';
+import dynamic from 'next/dynamic';
+
+const MetaTagsGenerator = dynamic(() => import('@/components/tools/meta-tags-generator').then(mod => ({ default: mod.MetaTagsGenerator })));
+const SchemaMarkupGenerator = dynamic(() => import('@/components/tools/schema-markup-generator').then(mod => ({ default: mod.SchemaMarkupGenerator })));
+const LlmsTxtGenerator = dynamic(() => import('@/components/tools/llms-txt-generator').then(mod => ({ default: mod.LlmsTxtGenerator })));
+const BrokenLinkChecker = dynamic(() => import('@/components/tools/broken-link-checker').then(mod => ({ default: mod.BrokenLinkChecker })));
+const TokenCounter = dynamic(() => import('@/components/tools/token-counter').then(mod => ({ default: mod.TokenCounter })));
+const SitemapGenerator = dynamic(() => import('@/components/tools/sitemap-generator').then(mod => ({ default: mod.SitemapGenerator })));
+const RobotsTxtGenerator = dynamic(() => import('@/components/tools/robots-txt-generator').then(mod => ({ default: mod.RobotsTxtGenerator })));
+const OgPreviewChecker = dynamic(() => import('@/components/tools/og-preview-checker').then(mod => ({ default: mod.OgPreviewChecker })));
+const AIContentBriefGenerator = dynamic(() => import('@/components/tools/ai-content-brief-generator').then(mod => ({ default: mod.AIContentBriefGenerator })));
 
 export function generateStaticParams() {
   const categoryParams = (Object.keys(categoryConfig) as ToolCategory[]).map((slug) => ({
@@ -38,6 +41,19 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       title: `${category.name} — Free Online Tools`,
       description: category.description,
       alternates: { canonical: `/tools/${slug}` },
+      robots: { index: true, follow: true },
+      openGraph: {
+        title: `${category.name} — Free Online Tools`,
+        description: category.description,
+        url: `/tools/${slug}`,
+        type: 'website',
+        siteName: 'MyToolOrbit',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${category.name} — Free Online Tools`,
+        description: category.description,
+      },
     };
   }
 
@@ -48,6 +64,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       title: tool.metaTitle,
       description: tool.metaDescription,
       alternates: { canonical: `/tools/${tool.slug}` },
+      robots: { index: true, follow: true },
       openGraph: {
         title: tool.metaTitle,
         description: tool.metaDescription,
@@ -83,6 +100,8 @@ function getToolWidget(slug: string) {
       return <RobotsTxtGenerator />;
     case 'og-preview-checker':
       return <OgPreviewChecker />;
+    case 'ai-content-brief-generator':
+      return <AIContentBriefGenerator />;
     default:
       return null;
   }

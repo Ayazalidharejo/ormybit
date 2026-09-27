@@ -72,3 +72,30 @@
     border-radius: 3px;
   }
 }
+
+.quill-wrapper .ql-container {
+  font-family: inherit;
+  font-size: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.quill-wrapper .ql-editor {
+  flex: 1;
+  min-height: 500px;
+}
+.dark .quill-wrapper .ql-toolbar {
+  border-color: #3f3f46;
+}
+.dark .quill-wrapper .ql-container {
+  border-color: #3f3f46;
+}
+.dark .quill-wrapper .ql-snow .ql-stroke {
+  stroke: #a1a1aa;
+}
+.dark .quill-wrapper .ql-snow .ql-fill {
+  fill: #a1a1aa;
+}
+.dark .quill-wrapper .ql-snow .ql-picker {
+  color: #a1a1aa;
+}
